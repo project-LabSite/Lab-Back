@@ -68,7 +68,7 @@ public class SecurityConfig {
 
         http
                 .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
-a
+
         //세션 설정
         http
                 .sessionManagement((session) -> session
