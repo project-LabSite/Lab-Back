@@ -1,6 +1,5 @@
 package com.eepl.lab_back.filter;
 
-import com.eepl.lab_back.dto.CustomUserDetails;
 import com.eepl.lab_back.entity.UserEntity;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -10,12 +9,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
@@ -54,25 +57,23 @@ public class JWTFilter extends OncePerRequestFilter {
 
         if (!category.equals("access")) {
 
-            //response body
             PrintWriter writer = response.getWriter();
             writer.print("invalid access token");
 
-            //response status code
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        // username, role 값을 획득
         String userID = jwtUtil.getUserID(accessToken);
-        String role = jwtUtil.getUserRole(accessToken);
+        String userRole = jwtUtil.getUserRole(accessToken);
 
         UserEntity userEntity = new UserEntity();
         userEntity.setUserId(userID);
-        userEntity.setUserRole(role);
-        CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 
-        Authentication authToken = new UsernamePasswordAuthenticationToken(userID, null, customUserDetails.getAuthorities());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(userRole));
+
+        Authentication authToken = new UsernamePasswordAuthenticationToken(userID, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);

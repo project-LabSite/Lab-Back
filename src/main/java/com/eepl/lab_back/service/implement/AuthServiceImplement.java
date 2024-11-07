@@ -82,7 +82,7 @@ public class AuthServiceImplement implements AuthService {
 
             int userPassStatus = userEntity.getUserPass();
 
-            if (userPassStatus != 1) {
+            if (userPassStatus == 0) {
                 return SignInResponseDTO.accountPending();
             }
 
@@ -91,7 +91,13 @@ public class AuthServiceImplement implements AuthService {
             boolean isMatched = passwordEncoder.matches(userPW, encodedUserPW);
             if (!isMatched) return SignInResponseDTO.signInFail();
 
-            String userRole = userEntity.getUserRole();
+            Integer userPass = userEntity.getUserPass();
+            String userRole;
+
+            if (userPass == 2) {
+                userRole = "ROLE_ADMIN";
+            } else { userRole = "ROLE_USER";}
+
 
             access = jwtUtil.createJwt("access", userID, userRole, 600000L);
             refresh = jwtUtil.createJwt("refresh", userID, userRole,86400000L);
@@ -103,7 +109,7 @@ public class AuthServiceImplement implements AuthService {
             exception.printStackTrace();
             return ResponseDTO.databaseError();
         }
-        return SignInResponseDTO.success(access, response);
+        return SignInResponseDTO.success(access, refresh, response);
     }
 
 

@@ -25,7 +25,7 @@ public class AdminServiceImplement implements AdminService {
     public ResponseEntity<? super UserListResponseDTO> getUserList() {
         List<UserEntity> userEntities = new ArrayList<>();
         try {
-            userEntities = userRepository.findByOrderByUserJoinDateDesc();
+            userEntities = userRepository.findByOrderByUserNumberDesc();
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDTO.databaseError();

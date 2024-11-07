@@ -14,5 +14,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     UserEntity findByUserId(String userID);
 
-    List<UserEntity> findByOrderByUserJoinDateDesc();
+    List<UserEntity> findByOrderByUserNumberDesc();
 }

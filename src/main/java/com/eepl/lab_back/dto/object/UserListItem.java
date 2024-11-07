@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -17,14 +17,12 @@ public class UserListItem {
 
     private String userId;
     private String userName;
-    private String userJoinDate;
     private int userPass;
 
     public UserListItem(UserEntity userEntity) {
 
         this.userId = userEntity.getUserId();
         this.userName = userEntity.getUserName();
-        this.userJoinDate = userEntity.getUserJoinDate();
         this.userPass = userEntity.getUserPass();
     }
 

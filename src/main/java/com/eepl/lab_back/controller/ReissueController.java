@@ -1,5 +1,6 @@
 package com.eepl.lab_back.controller;
 
+import com.eepl.lab_back.dto.response.auth.TokenResponseDTO;
 import com.eepl.lab_back.entity.RefreshEntity;
 import com.eepl.lab_back.filter.JWTUtil;
 import com.eepl.lab_back.repository.RefreshRepository;
@@ -67,11 +68,11 @@ public class ReissueController {
         }
 
         String userID = jwtUtil.getUserID(refresh);
-        String role = jwtUtil.getUserRole(refresh);
+        String userRole = jwtUtil.getUserRole(refresh);
 
         //make new JWT
-        String newAccess = jwtUtil.createJwt("access", userID, role,600000L);
-        String newRefresh = jwtUtil.createJwt("refresh", userID, role,86400000L);
+        String newAccess = jwtUtil.createJwt("access", userID, userRole,600000L);
+        String newRefresh = jwtUtil.createJwt("refresh", userID, userRole,86400000L);
 
         //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
         refreshRepository.deleteByRefresh(refresh);
@@ -81,7 +82,9 @@ public class ReissueController {
         response.setHeader("access", newAccess);
         response.addCookie(createCookie("refresh", newRefresh));
 
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO(newAccess, newRefresh);
+        return new ResponseEntity<>(tokenResponseDTO, HttpStatus.OK);
     }
 
     private void addRefreshEntity(String userID, String refresh, Long expiredMs) {

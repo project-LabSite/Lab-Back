@@ -15,15 +15,17 @@ import org.springframework.http.ResponseEntity;
 public class SignInResponseDTO extends ResponseDTO {
 
     private String access;
+    private String refresh;
 
-    public SignInResponseDTO(String access) {
+    public SignInResponseDTO(String access, String refresh) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.access = access;
+        this.refresh = refresh;
     }
 
 
-    public static ResponseEntity<SignInResponseDTO> success(String access,HttpServletResponse response) {
-        SignInResponseDTO result = new SignInResponseDTO(access);
+    public static ResponseEntity<SignInResponseDTO> success(String access,String refresh, HttpServletResponse response) {
+        SignInResponseDTO result = new SignInResponseDTO(access, refresh);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(result);
