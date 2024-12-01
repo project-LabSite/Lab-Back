@@ -6,21 +6,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "image")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "image")
 public class ImageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int sequence;
-    private int boardNumber;
-    private String image;
+    private int imageNumber;
+    private int newsNumber;
+    private String imageUrl;
 
-    public ImageEntity(int boardNumber, String image) {
-        this.boardNumber = boardNumber;
-        this.image = image;
+    public ImageEntity(int newsNumber, String imageUrl) {
+        this.newsNumber = newsNumber;
+        this.imageUrl = imageUrl;
     }
 }
