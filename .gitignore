@@ -38,4 +38,5 @@ out/
 .vscode/
 
 application.properties
-application-private.properties
+target/
+Procfile

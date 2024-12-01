@@ -10,6 +10,7 @@ public interface ResponseMessage {
     String VALIDATION_FAILED = "Validation Failed";
     String DUPLICATE_ID = "Duplicate Id";
     String DUPLICATE_EMAIL = "Duplicate Email";
+    String INVALID_EMAIL = "Invalid Email";
     String DUPLICATE_PHONE = "Duplicate PhoneNumber";
     String NOT_EXISTED_USER = "This user does not exist.";
     String NOT_EXISTED_BOARD = "This board does not exist.";

@@ -5,6 +5,8 @@ import com.eepl.lab_back.entity.RefreshEntity;
 import com.eepl.lab_back.filter.JWTUtil;
 import com.eepl.lab_back.repository.RefreshRepository;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +28,7 @@ public class ReissueController {
     private final RefreshRepository refreshRepository;
 
     @PostMapping("/api/auth/reissue")
+    @Operation(summary = "Reissue", description = "액세스 토큰 재발급 API")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
 
         //get refresh token

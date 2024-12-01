@@ -11,6 +11,7 @@ public interface ResponseCode {
     String DUPLICATE_ID = "DI";
 
     String DUPLICATE_EMAIL = "DE";
+    String INVALID_EMAIL = "IE";
     String DUPLICATE_PHONE = "DP";
     String NOT_EXISTED_USER = "NU";
     String NOT_EXISTED_BOARD = "NB";

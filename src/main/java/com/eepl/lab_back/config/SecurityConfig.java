@@ -41,6 +41,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        // CORS 설정 추가
+        http
+                .cors((cors) -> cors.configurationSource(request -> {
+                    org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
+                    config.addAllowedOrigin("https://project-labsite.github.io"); // 프론트 URL
+                    config.addAllowedMethod("GET");
+                    config.addAllowedMethod("POST");
+                    config.addAllowedMethod("PUT");
+                    config.addAllowedMethod("DELETE");
+                    config.addAllowedMethod("PATCH");
+                    config.addAllowedMethod("OPTIONS");
+                    config.addAllowedHeader("*");
+                    config.setAllowCredentials(true); // 쿠키 사용 시 필요
+                    return config;
+                }));
+
         //csrf disable
         http
                 .csrf((auth) -> auth.disable());
@@ -57,11 +73,14 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/file/**").permitAll()
+                        .requestMatchers("/", "/swagger-ui/**","/v3/api-docs/**").permitAll()                        .requestMatchers("/file/**").permitAll()
                         .requestMatchers("/reissue").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/news/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/news/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers("/api/{language}/news/**").permitAll()
+                        .requestMatchers("/api/{language}/research/**").permitAll()
+                        .requestMatchers("/api/{language}/member").permitAll()
+                        .requestMatchers("/api/{language}/contact").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/{language}/news/post/**").hasAnyRole("ADMIN","USER")
                         .anyRequest().authenticated());
 
 
@@ -79,4 +98,6 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
 }
