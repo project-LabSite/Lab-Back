@@ -5,6 +5,7 @@ import com.eepl.lab_back.dto.request.auth.SignInRequestDTO;
 import com.eepl.lab_back.dto.request.auth.SignUpRequestDTO;
 import com.eepl.lab_back.dto.response.ResponseDTO;
 import com.eepl.lab_back.dto.response.auth.ModifyResponseDTO;
+import com.eepl.lab_back.dto.response.auth.MypageResponseDTO;
 import com.eepl.lab_back.dto.response.auth.SignInResponseDTO;
 import com.eepl.lab_back.dto.response.auth.SignUpResponseDTO;
 import com.eepl.lab_back.entity.RefreshEntity;
@@ -16,13 +17,10 @@ import com.eepl.lab_back.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.patterns.IToken;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Date;
 
@@ -48,10 +46,6 @@ public class AuthServiceImplement implements AuthService {
             String userEmail = dto.getUserEmail();
             boolean existedUserEmail = userRepository.existsByUserEmail(userEmail);
             if (existedUserEmail) return SignUpResponseDTO.duplicateEmail();
-
-            String userPhone = dto.getUserPhone();
-            boolean existedUserPhone = userRepository.existsByUserPhone(userPhone);
-            if (existedUserPhone) return SignUpResponseDTO.duplicatePhone();
 
             String userPW = dto.getUserPW();
 
@@ -120,7 +114,6 @@ public class AuthServiceImplement implements AuthService {
         try {
 
             UserEntity userEntity = userRepository.findByUserId(userID);
-            System.out.println(userID);
 
             //입력받은 originPW
             String originPW = dto.getOriginPW();
@@ -144,6 +137,23 @@ public class AuthServiceImplement implements AuthService {
             return ResponseDTO.databaseError();
         }
         return ModifyResponseDTO.success();
+    }
+
+    @Override
+    public ResponseEntity<? super MypageResponseDTO> mypage(String userID) {
+
+        UserEntity userEntity = null;
+        try {
+
+            userEntity = userRepository.findByUserId(userID);
+            if (userEntity == null) {
+                MypageResponseDTO.notExistUser();
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDTO.databaseError();
+        }
+        return MypageResponseDTO.success(userEntity);
     }
 
     private void addRefreshEntity(String userID, String refresh, Long expiredMs) {

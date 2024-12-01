@@ -3,12 +3,9 @@ package com.eepl.lab_back.dto.response.auth;
 import com.eepl.lab_back.common.ResponseCode;
 import com.eepl.lab_back.common.ResponseMessage;
 import com.eepl.lab_back.dto.response.ResponseDTO;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 
 @Getter
