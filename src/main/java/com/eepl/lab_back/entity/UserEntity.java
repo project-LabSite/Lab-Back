@@ -1,18 +1,12 @@
 package com.eepl.lab_back.entity;
 
-import com.eepl.lab_back.dto.request.auth.ModifyRequestDTO;
 import com.eepl.lab_back.dto.request.auth.SignUpRequestDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user")
@@ -32,11 +26,16 @@ public class UserEntity {
 
     private String userName;
 
+    @Column(name = "user_name_e")
+    private String userNameE;
+
+    private String userImageUrl;
+
+
     private int userPass;
 
     private String userEmail;
 
-    private String userPhone;
 
     private String userPosition;
 
@@ -44,7 +43,8 @@ public class UserEntity {
         this.userId = dto.getUserID();
         this.userPw = dto.getUserPW();
         this.userName = dto.getUserName();
-        this.userPhone = dto.getUserPhone();
+        this.userNameE = dto.getUserNameE();
+        this.userImageUrl = dto.getUserImageUrl();
         this.userEmail = dto.getUserEmail();
         this.userPosition = dto.getUserPosition();
     }

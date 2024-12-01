@@ -4,7 +4,6 @@ import com.eepl.lab_back.common.ResponseCode;
 import com.eepl.lab_back.common.ResponseMessage;
 import com.eepl.lab_back.dto.object.UserListItem;
 import com.eepl.lab_back.dto.response.ResponseDTO;
-import com.eepl.lab_back.dto.response.auth.ModifyResponseDTO;
 import com.eepl.lab_back.entity.UserEntity;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,7 @@ public class UserListResponseDTO extends ResponseDTO {
 
     private List<UserListItem> userList;
 
-    public UserListResponseDTO(List<UserEntity> userEntities) {
+    private UserListResponseDTO(List<UserEntity> userEntities) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.userList = UserListItem.getList(userEntities);
     }

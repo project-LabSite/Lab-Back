@@ -1,8 +1,7 @@
 package com.eepl.lab_back.service.implement;
 
 import com.eepl.lab_back.dto.response.ResponseDTO;
-import com.eepl.lab_back.dto.response.admin.ApproveUserResponseDTO;
-import com.eepl.lab_back.dto.response.admin.RejectUserResponseDTO;
+import com.eepl.lab_back.dto.response.admin.SetUserStatusResponseDTO;
 import com.eepl.lab_back.dto.response.admin.UserListResponseDTO;
 import com.eepl.lab_back.entity.UserEntity;
 import com.eepl.lab_back.repository.UserRepository;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +32,7 @@ public class AdminServiceImplement implements AdminService {
     }
 
     @Override
-    public ResponseEntity<? super ApproveUserResponseDTO> approveUser(String userId) {
+    public ResponseEntity<? super SetUserStatusResponseDTO> approveUser(String userId) {
 
         try {
             UserEntity user = userRepository.findByUserId(userId);
@@ -44,17 +42,17 @@ public class AdminServiceImplement implements AdminService {
                 userRepository.save(user);
             }
             else {
-                return ApproveUserResponseDTO.notExistedUser(); // 사용자가 존재하지 않을 때 처리
+                return SetUserStatusResponseDTO.notExistedUser(); // 사용자가 존재하지 않을 때 처리
             }
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDTO.databaseError();
         }
-        return ApproveUserResponseDTO.success();
+        return SetUserStatusResponseDTO.success();
     }
     @Override
-    public ResponseEntity<? super RejectUserResponseDTO> rejectUser(String userId) {
+    public ResponseEntity<? super SetUserStatusResponseDTO> rejectUser(String userId) {
 
         try {
             UserEntity user = userRepository.findByUserId(userId);
@@ -63,13 +61,33 @@ public class AdminServiceImplement implements AdminService {
                 userRepository.delete(user);
             }
             else {
-                return RejectUserResponseDTO.notExistedUser(); // 사용자가 존재하지 않을 때 처리
+                return SetUserStatusResponseDTO.notExistedUser(); // 사용자가 존재하지 않을 때 처리
             }
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDTO.databaseError();
         }
-        return RejectUserResponseDTO.success();
+        return SetUserStatusResponseDTO.success();
+    }
+
+    @Override
+    public ResponseEntity<? super SetUserStatusResponseDTO> setHead(String userId) {
+
+        try {
+            UserEntity user = userRepository.findByUserId(userId);
+
+            if (user != null) {
+                user.setUserPass(2);
+                userRepository.save(user);
+            }
+            else {
+                return SetUserStatusResponseDTO.notExistedUser(); // 사용자가 존재하지 않을 때 처리
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDTO.databaseError();
+        }
+        return SetUserStatusResponseDTO.success();
     }
 }

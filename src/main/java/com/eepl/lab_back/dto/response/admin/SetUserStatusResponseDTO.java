@@ -3,20 +3,18 @@ package com.eepl.lab_back.dto.response.admin;
 import com.eepl.lab_back.common.ResponseCode;
 import com.eepl.lab_back.common.ResponseMessage;
 import com.eepl.lab_back.dto.response.ResponseDTO;
-import com.eepl.lab_back.dto.response.auth.SignInResponseDTO;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
-public class ApproveUserResponseDTO extends ResponseDTO {
-    public ApproveUserResponseDTO() {
+public class SetUserStatusResponseDTO extends ResponseDTO {
+    public SetUserStatusResponseDTO() {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
-    public static ResponseEntity<ApproveUserResponseDTO> success() {
-        ApproveUserResponseDTO result = new ApproveUserResponseDTO();
+    public static ResponseEntity<SetUserStatusResponseDTO> success() {
+        SetUserStatusResponseDTO result = new SetUserStatusResponseDTO();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     public static ResponseEntity<ResponseDTO> notExistedUser() {
